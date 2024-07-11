@@ -8,17 +8,17 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
     </head>
-    <body  class="bg-slate-100 dark:bg-slate-700">
-        @if (request()->is('admin'))
-            @livewire('admin.section.navbar')
-        @else
-            @livewire('user.section.navbar')
-        @endif
+    <body class="bg-slate-100 dark:bg-slate-700">
+        @livewire('user.section.navbar')
         <main>
             {{ $slot }}
         </main>
         @livewire('user.section.footer')
 
         @livewireScripts
+
+        <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  
+        <x-livewire-alert::scripts />
     </body>
 </html>
