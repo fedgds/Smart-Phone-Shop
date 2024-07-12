@@ -58,17 +58,18 @@
                 <form wire:submit.prevent="{{ $isEditMode ? 'update' : 'store' }}">
                     <div class="mb-4">
                         <label for="name" class="block text-sm font-medium text-gray-700">Tên danh mục</label>
-                        <input type="text" wire:model="name" id="name" class="mt-1 block w-full" wire:change="generateSlug">
+                        <input type="text" wire:model="name" id="name" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md" wire:change="generateSlug">
                         @error('name') <span class="text-red-500">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-medium text-gray-700">Đường dẫn</label>
-                        <input type="text" wire:model.defer="slug" id="slug" class="mt-1 block w-full" disabled>
+                        <input type="text" wire:model.defer="slug" id="slug" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md bg-gray-300" readonly>
                         @error('slug') <span class="text-red-500">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-4">
-                        <label for="password" class="block text-sm font-medium text-gray-700">Ảnh</label>
-                        <input type="file" wire:model="image" id="image" class="mt-1 block w-full">
+                        <label for="image" class="block text-sm font-medium text-gray-700">Ảnh</label>
+                        <input type="file" wire:model="image" id="image" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md">
+
                         @if ($isEditMode)
                             <img class="mt-2 h-32" src="{{$image}}" alt="">
                         @endif
@@ -76,7 +77,10 @@
                     </div>
                     <div class="mb-4">
                         <label for="is_active" class="block text-sm font-medium text-gray-700">Kích hoạt</label>
-                        <input type="checkbox" wire:model="is_active" id="is_active" {{ $is_active ? 'checked' : '' }}>
+                        <label class="inline-flex items-center cursor-pointer mt-2">
+                            <input type="checkbox" wire:model="is_active" id="is_active" {{ $is_active ? 'checked' : '' }} class="sr-only peer" value="">
+                            <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        </label>
                     </div>
                     
                     <div class="flex items-center justify-end">

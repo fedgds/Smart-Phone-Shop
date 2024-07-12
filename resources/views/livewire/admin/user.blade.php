@@ -57,24 +57,27 @@
                 <form wire:submit.prevent="{{ $isEditMode ? 'update' : 'store' }}">
                     <div class="mb-4">
                         <label for="name" class="block text-sm font-medium text-gray-700">Tên</label>
-                        <input type="text" wire:model="name" id="name" class="mt-1 block w-full">
+                        <input type="text" wire:model="name" id="name" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md">
                         @error('name') <span class="text-red-500">{{ $message }}</span> @enderror
                     </div>
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
-                        <input type="email" wire:model="email" id="email" class="mt-1 block w-full">
+                        <input type="email" wire:model="email" id="email" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md">
                         @error('email') <span class="text-red-500">{{ $message }}</span> @enderror
                     </div>
                     @if(!$isEditMode)
                         <div class="mb-4">
                             <label for="password" class="block text-sm font-medium text-gray-700">Mật khẩu</label>
-                            <input type="password" wire:model="password" id="password" class="mt-1 block w-full">
+                            <input type="password" wire:model="password" id="password" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md">
                             @error('password') <span class="text-red-500">{{ $message }}</span> @enderror
                         </div>
                     @endif
                     <div class="mb-4">
                         <label for="is_admin" class="block text-sm font-medium text-gray-700">Quyền quản trị</label>
-                        <input type="checkbox" wire:model="is_admin" id="is_admin" {{ $is_admin ? 'checked' : '' }}>
+                        <label class="inline-flex items-center cursor-pointer mt-2">
+                            <input type="checkbox" wire:model="is_admin" id="is_admin" {{ $is_admin ? 'checked' : '' }} class="sr-only peer" value="">
+                            <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                        </label>
                     </div>
                     
                     <div class="flex items-center justify-end">
