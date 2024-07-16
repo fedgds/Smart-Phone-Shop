@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->string('code');
             $table->integer('discount');
-            $table->enum('discount_type', ['fixed', 'percentage']);
+            $table->string('discount_type');
             $table->integer('usage_limit');
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
-            $table->enum('status', ['active', 'expired', 'unactive'])->default('active');
+            $table->string('status');
             $table->timestamps();
         });
     }

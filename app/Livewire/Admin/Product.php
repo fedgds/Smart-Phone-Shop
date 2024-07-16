@@ -143,7 +143,7 @@ class Product extends Component
             $this->sale_price = $product->sale_price;
             $this->description = $product->description;
             $this->category_id = $product->category_id;
-            $this->images = json_decode($product->images);
+            $this->images = $product->images;
             $this->is_active = $product->is_active;
             $this->is_featured = $product->is_featured;
             $this->in_stock = $product->in_stock;
@@ -209,7 +209,7 @@ class Product extends Component
     {
         $product = ModelsProduct::findOrFail($id);
         if ($product->images) {
-            foreach (json_decode($product->images) as $image) {
+            foreach ($product->images as $image) {
                 Storage::disk('public')->delete($image);
             }
         }
@@ -231,11 +231,23 @@ class Product extends Component
                 case 'default':
                     $query->orderBy('created_at', 'asc');
                     break;
-                case 'name_desc':
-                    $query->orderBy('name', 'desc');
+                case 'is_active':
+                    $query->where('is_active', '1');
                     break;
-                case 'name_asc':
-                    $query->orderBy('name', 'asc');
+                case 'is_featured':
+                    $query->where('is_featured', '1');
+                    break;
+                case 'in_stock':
+                    $query->where('in_stock', '1');
+                    break;
+                case 'on_sale':
+                    $query->where('on_sale', '1');
+                    break;
+                case 'price_desc':
+                    $query->orderBy('price', 'desc');
+                    break;
+                case 'price_asc':
+                    $query->orderBy('price', 'asc');
                     break;
             }
         }

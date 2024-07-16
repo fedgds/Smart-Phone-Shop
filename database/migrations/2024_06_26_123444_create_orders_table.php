@@ -17,7 +17,12 @@ return new class extends Migration
             $table->integer('grand_total')->nullable();
             $table->string('payment_method')->nullable();
             $table->string('payment_status')->nullable()->default('pending');
-            $table->enum('status', ['new', 'processing', 'shipped', 'delivered', 'cancelled'])->default('new');
+            $table->string('status');
+            $table->string('full_name');
+            $table->string('phone_number');
+            $table->string('city');
+            $table->string('district');
+            $table->string('address');
             $table->text('notes')->nullable();
             $table->timestamps();
         });

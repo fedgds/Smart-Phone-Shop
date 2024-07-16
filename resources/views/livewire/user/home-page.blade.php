@@ -5,35 +5,74 @@
           <!-- Grid -->
           <div class="grid gap-4 md:gap-8 xl:gap-20 md:items-center w-full px-20">
             <div class="flex gap-4">
-                <div class="list_category border-2 border-blue-100 hover:border-blue-400 w-full p-4 rounded-lg shadow-lg">
-                    <h2 class="text-center text-2xl font-bold text-gray-600 mb-4">Danh mục</h2>
+                <div class="list_category border-2 border-blue-100 hover:border-blue-300 w-full p-4 rounded-lg shadow-lg">
+                    <h2 style="font-family: cursive" class="text-center text-2xl font-bold text-blue-600 mb-4">Danh mục</h2>
                     <ul class="flex flex-col gap-4">
-                        <li class="flex items-center gap-4 bg-white p-2 rounded-lg shadow-md hover:bg-gray-100 transition">
-                            <img class="w-10 h-10 object-cover rounded" src="/img/banner2.jpg" alt="Dien thoai">
-                            <div class="text-lg font-medium hover:underline">Dien thoai</div>
+                      @foreach ($categories as $category)
+                        <li class="flex items-center gap-4 bg-white p-2 rounded-lg shadow-md hover:bg-gray-100 transition hover:cursor-pointer">
+                          <a href="category/{{ $category->slug }}">
+                            <img class="w-15 h-10 object-cover rounded" src="{{ url('storage', $category->image) }}" alt="Dien thoai">
+                          </a>
+                          <a href="category/{{ $category->slug }}">
+                            <div style="font-family: cursive" class="text-lg font-medium hover:underline">{{ $category->name }}</div>
+                          </a>
                         </li>
-                        <li class="flex items-center gap-4 bg-white p-2 rounded-lg shadow-md hover:bg-gray-100 transition">
-                            <img class="w-10 h-10 object-cover rounded" src="/img/banner2.jpg" alt="Dien thoai">
-                            <div class="text-lg font-medium hover:underline">Dien thoai</div>
-                        </li>
-                        <li class="flex items-center gap-4 bg-white p-2 rounded-lg shadow-md hover:bg-gray-100 transition">
-                            <img class="w-10 h-10 object-cover rounded" src="/img/banner2.jpg" alt="Dien thoai">
-                            <div class="text-lg font-medium hover:underline">Dien thoai</div>
-                        </li>
-                        <li class="flex items-center gap-4 bg-white p-2 rounded-lg shadow-md hover:bg-gray-100 transition">
-                            <img class="w-10 h-10 object-cover rounded" src="/img/banner2.jpg" alt="Dien thoai">
-                            <div class="text-lg font-medium hover:underline">Dien thoai</div>
-                        </li>
+                      @endforeach
                     </ul>
                 </div>
                 
-                <img src="/img/banner1.jpg" alt="">
+                <img class="rounded-md" src="/img/banner1.jpg" alt="">
             </div>
           </div>
           <!-- End Grid -->
         </div>
     </div>
     {{-- End Hero Section --}}
+    {{-- Start Product Featured Section --}}
+    <div class=" py-20">
+      <div class="max-w-xl mx-auto">
+        <div class="text-center ">
+          <div class="relative flex flex-col items-center">
+            <h1 style="font-family: cursive" class="text-5xl dark:text-gray-200 mb-3">Sản phẩm <span class="text-blue-600">nổi bật</span></h1>
+          </div>
+          <p class="mb-12 text-base text-center text-gray-500">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus magni eius eaque?
+            Pariatur
+            numquam, odio quod nobis ipsum ex cupiditate?
+          </p>
+        </div>
+      </div>
+    
+      <div class="max-w-[85rem] px-4 sm:px-6 lg:px-8 mx-auto">
+        <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
+    
+          @foreach($featured_products as $product)
+            <a class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-slate-900 dark:border-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="product/{{$product->slug}}">
+              <div class="p-4 md:p-5">
+                <div class="flex justify-between items-center">
+                  <div class="flex items-center">
+                    <img class="h-[2.375rem] w-[2.375rem] rounded-full" src="{{ url('storage', $product->images[0]) }}" alt="Image Description">
+                    <div class="ms-3">
+                      <h3 class="group-hover:text-blue-600 font-semibold text-gray-800 dark:group-hover:text-gray-400 dark:text-gray-200">
+                        {{ $product->name }}
+                      </h3>
+                    </div>
+                  </div>
+                  <div class="ps-3">
+                    <svg class="flex-shrink-0 w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="m9 18 6-6-6-6" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+            </a>
+            @endforeach
+    
+        </div>
+      </div>
+    
+  </div>
+  {{-- End Product Featured Section --}}
     {{-- Start Brand Section --}}
     <section class="py-20 ">
         <div class="max-w-xl mx-auto">
@@ -68,51 +107,7 @@
         </div>
     </section>
     {{-- End Brand Section --}}
-    {{-- Start Category Section --}}
-    <div class=" py-20">
-        <div class="max-w-xl mx-auto">
-          <div class="text-center ">
-            <div class="relative flex flex-col items-center">
-              <h1 style="font-family: cursive" class="text-5xl text-blue-600 dark:text-gray-200 mb-3">Danh Mục</h1>
-            </div>
-            <p class="mb-12 text-base text-center text-gray-500">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus magni eius eaque?
-              Pariatur
-              numquam, odio quod nobis ipsum ex cupiditate?
-            </p>
-          </div>
-        </div>
-      
-        <div class="max-w-[85rem] px-4 sm:px-6 lg:px-8 mx-auto">
-          <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
-      
-            {{-- @foreach($categories as $category)
-              <a class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-slate-900 dark:border-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="products?selected_categories[0]={{ $category->id }}" wire:key="{{ $category->id }}">
-                <div class="p-4 md:p-5">
-                  <div class="flex justify-between items-center">
-                    <div class="flex items-center">
-                      <img class="h-[2.375rem] w-[2.375rem] rounded-full" src="{{ url('storage', $category->image) }}" alt="Image Description">
-                      <div class="ms-3">
-                        <h3 class="group-hover:text-blue-600 font-semibold text-gray-800 dark:group-hover:text-gray-400 dark:text-gray-200">
-                          {{ $category->name }}
-                        </h3>
-                      </div>
-                    </div>
-                    <div class="ps-3">
-                      <svg class="flex-shrink-0 w-5 h-5" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m9 18 6-6-6-6" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
-              </a>
-              @endforeach --}}
-      
-          </div>
-        </div>
-      
-    </div>
-    {{-- End Category Section --}}
+
     {{-- Start Customer Review Section --}}
     <section class="py-14 font-poppins ">
         <div class="max-w-6xl px-4 py-6 mx-auto lg:py-4 md:px-6">

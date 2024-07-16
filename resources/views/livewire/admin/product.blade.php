@@ -5,8 +5,18 @@
         <div class="flex gap-3">
             <select wire:model.live="sort" class="block w-50 text-base bg-gray-200 px-3 py-2 cursor-pointer dark:text-gray-400 dark:bg-gray-900 rounded-lg">
                 <option value="default">Mặc định</option>
-                <option value="name_asc">A-Z</option>
-                <option value="name_desc">Z-A</option>
+                <option value="is_active">Kích hoạt</option>
+                <option value="is_featured">Nổi bật</option>
+                <option value="in_stock">Còn hàng</option>
+                <option value="on_sale">Giảm giá</option>
+                <option value="price_asc">Tăng dần</option>
+                <option value="price_desc">Giảm dần</option>
+            </select>
+            <select wire:model.live="sort" class="block w-50 text-base bg-gray-200 px-3 py-2 cursor-pointer dark:text-gray-400 dark:bg-gray-900 rounded-lg">
+                <option value="default">Chọn danh mục</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
             </select>
             <input wire:model.live="search" type="text" class="block w-50 text-base bg-gray-200 px-3 py-2 cursor-pointer dark:text-gray-400 dark:bg-gray-900 rounded-lg" placeholder="Tìm kiếm sản phẩm...">
         </div>
@@ -18,9 +28,8 @@
                     <th>Danh mục</th>
                     <th>Ảnh</th>
                     <th>Tên</th>
-                    <th>Slug</th>
                     <th>Giá</th>
-                    <th>Giá khuyến mãi</th>
+                    <th>Giá giảm</th>
                     <th>Kích hoạt</th>
                     <th>Nổi bật</th>
                     <th>Còn hàng</th>
@@ -35,9 +44,8 @@
                             <td>{{ $product->category->name }}</td>
                             <td class="flex justify-center"><img src="{{ url('storage', $product->images[0]) }}" alt="" class="border h-20 rounded-lg hover:opacity-70 hover:border-blue-400"></td>
                             <td>{{ $product->name }}</td>
-                            <td>{{ $product->slug }}</td>
-                            <td>{{ $product->price }}</td>
-                            <td>{{ $product->sale_price }}</td>
+                            <td>{{ number_format($product->price) }} đ</td>
+                            <td>{{ number_format($product->sale_price) }} đ</td>
                             <td>{!! $product->is_active==1 ? '<i class="fa-solid fa-check text-blue-600"></i>' : '<i class="fa-solid fa-xmark text-red-600"></i>' !!}</td>
                             <td>{!! $product->is_featured==1 ? '<i class="fa-solid fa-check text-blue-600"></i>' : '<i class="fa-solid fa-xmark text-red-600"></i>' !!}</td>
                             <td>{!! $product->in_stock==1 ? '<i class="fa-solid fa-check text-blue-600"></i>' : '<i class="fa-solid fa-xmark text-red-600"></i>' !!}</td>
@@ -71,12 +79,12 @@
                     <div class="mb-4 flex gap-2">
                         <div class="w-1/2">
                             <label for="name" class="block text-sm font-medium text-gray-700">Tên sản phẩm</label>
-                            <input type="text" wire:model="name" id="name" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md" wire:change="generateSlug">
+                            <input type="text" wire:model="name" id="name" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md" placeholder="Tên sản phầm" wire:change="generateSlug">
                             @error('name') <span class="text-red-500">{{ $message }}</span> @enderror
                         </div>
                         <div class="w-1/2">
                             <label for="slug" class="block text-sm font-medium text-gray-700">Slug</label>
-                            <input type="text" wire:model="slug" id="slug" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md bg-gray-300" readonly>
+                            <input type="text" wire:model="slug" id="slug" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md pl bg-gray-300" placeholder="ten-san-pham" readonly>
                             @error('slug') <span class="text-red-500">{{ $message }}</span> @enderror
                         </div>
                     </div>
@@ -84,19 +92,22 @@
                     <div class="mb-4 flex gap-2">
                         <div class="w-1/2">
                             <label for="price" class="block text-sm font-medium text-gray-700">Giá</label>
-                            <input type="number" wire:model="price" id="price" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md">
+                            <input type="number" wire:model="price" id="price" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md" placeholder="Giá">
                             @error('price') <span class="text-red-500">{{ $message }}</span> @enderror
                         </div>
-                        <div class="w-1/2">
-                            <label for="sale_price" class="block text-sm font-medium text-gray-700">Giá khuyến mãi</label>
-                            <input type="number" wire:model="sale_price" id="sale_price" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md">
-                            @error('sale_price') <span class="text-red-500">{{ $message }}</span> @enderror
-                        </div>   
+                        @if ($on_sale == 1)
+                            <div class="w-1/2">
+                                <label for="sale_price" class="block text-sm font-medium text-gray-700">Giá khuyến mãi</label>
+                                <input type="number" wire:model="sale_price" id="sale_price" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md" placeholder="Giá khuyến mãi">
+                                @error('sale_price') <span class="text-red-500">{{ $message }}</span> @enderror
+                            </div>   
+                        @endif
+
                     </div>
 
                     <div class="mb-4">
                         <label for="description" class="block text-sm font-medium text-gray-700">Mô tả</label>
-                        <textarea wire:model="description" id="description" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md"></textarea>
+                        <textarea wire:model="description" id="description" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md" placeholder="Mô tả"></textarea>
                         @error('description') <span class="text-red-500">{{ $message }}</span> @enderror
                     </div>
 
@@ -114,6 +125,13 @@
                     <div class="mb-4">
                         <label for="images" class="block text-sm font-medium text-gray-700">Hình ảnh</label>
                         <input type="file" wire:model="images" id="images" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md" multiple>
+                        @if ($isEditMode)
+                            <div class="mt-2 flex gap-3 justify-center">
+                                @foreach ($images as $image)
+                                    <img src="{{ Storage::url($image) }}" class="w-16 h-16 object-cover rounded-md border-2 border-gray-700 hover:opacity-80">
+                                @endforeach
+                            </div>
+                        @endif
                         @error('images') <span class="text-red-500">{{ $message }}</span> @enderror
                     </div>
 
