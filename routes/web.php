@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\ProviderController;
+use App\Livewire\Admin\Banner;
 use App\Livewire\Admin\Category;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Product;
@@ -49,6 +50,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/user', User::class)->name('admin.user');
         Route::get('/category', Category::class)->name('admin.category');
         Route::get('/product', Product::class)->name('admin.product');
+        Route::get('/banner', Banner::class)->name('admin.banner');
     });
 });
 

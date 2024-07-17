@@ -39,8 +39,8 @@
                 </li>
             </ul>
         </li>
-        <li class="mb-1 group">
-            <a href="#" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+        <li class="mb-1 group {{ request()->is('admin/banner')?'active':'' }}">
+            <a href="/admin/banner" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                 <i class="fa-solid fa-image mr-3 text-lg"></i>
                 <span class="text-sm">Banner</span>
             </a>

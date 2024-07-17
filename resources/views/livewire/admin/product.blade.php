@@ -44,8 +44,8 @@
                             <td>{{ $product->category->name }}</td>
                             <td class="flex justify-center"><img src="{{ url('storage', $product->images[0]) }}" alt="" class="border h-20 rounded-lg hover:opacity-70 hover:border-blue-400"></td>
                             <td>{{ $product->name }}</td>
-                            <td>{{ number_format($product->price) }} đ</td>
-                            <td>{{ number_format($product->sale_price) }} đ</td>
+                            <td>{{ number_format($product->price) }}</td>
+                            <td>{{ $product->sale_price ? number_format($product->sale_price) : '' }}</td>
                             <td>{!! $product->is_active==1 ? '<i class="fa-solid fa-check text-blue-600"></i>' : '<i class="fa-solid fa-xmark text-red-600"></i>' !!}</td>
                             <td>{!! $product->is_featured==1 ? '<i class="fa-solid fa-check text-blue-600"></i>' : '<i class="fa-solid fa-xmark text-red-600"></i>' !!}</td>
                             <td>{!! $product->in_stock==1 ? '<i class="fa-solid fa-check text-blue-600"></i>' : '<i class="fa-solid fa-xmark text-red-600"></i>' !!}</td>
@@ -59,13 +59,16 @@
 
                 @else
                     <tr>
-                        <td colspan="6" class="text-center text-red-600 mt-5">Chưa có dữ liệu</td>
+                        <td colspan="11" class="text-center text-red-600 mt-5">Chưa có dữ liệu</td>
                     </tr>
                 @endif
             </tbody>
         </table>
-        <div class="mt-4">
-            {{ $products->links() }}
+        <div class="mt-4 text-center">
+            @if (count($products) >= 6)
+                <button wire:loading.remove wire:click='loadMore' class="py-1 px-2 bg-blue-500 text-white rounded-lg hover:bg-red-600 mb-3">Xem thêm</button>
+                <button wire:loading wire:click='loadMore' class="py-1 px-2 bg-blue-500 text-white rounded-lg hover:bg-red-600 mb-3">Đang load...</button>
+            @endif
         </div>
     </div>
 
@@ -95,15 +98,12 @@
                             <input type="number" wire:model="price" id="price" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md" placeholder="Giá">
                             @error('price') <span class="text-red-500">{{ $message }}</span> @enderror
                         </div>
-                        @if ($on_sale == 1)
-                            <div class="w-1/2">
-                                <label for="sale_price" class="block text-sm font-medium text-gray-700">Giá khuyến mãi</label>
-                                <input type="number" wire:model="sale_price" id="sale_price" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md" placeholder="Giá khuyến mãi">
-                                @error('sale_price') <span class="text-red-500">{{ $message }}</span> @enderror
-                            </div>   
-                        @endif
-
-                    </div>
+                        <div class="w-1/2" x-show="$wire.on_sale">
+                            <label for="sale_price" class="block text-sm font-medium text-gray-700">Giá khuyến mãi</label>
+                            <input type="number" wire:model="sale_price" id="sale_price" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md" placeholder="Giá khuyến mãi">
+                            @error('sale_price') <span class="text-red-500">{{ $message }}</span> @enderror
+                        </div>
+                    </div>                    
 
                     <div class="mb-4">
                         <label for="description" class="block text-sm font-medium text-gray-700">Mô tả</label>
@@ -160,10 +160,10 @@
                         <div class="w-1/4">
                             <label for="on_sale" class="block text-sm font-medium text-gray-700">Giảm giá</label>
                             <label class="inline-flex items-center cursor-pointer mt-2">
-                                <input type="checkbox" wire:model="on_sale" id="on_sale" {{ $on_sale ? 'checked' : '' }} class="sr-only peer" value="">
+                                <input type="checkbox" wire:model="on_sale" wire:change="toggleSalePrice" id="on_sale" {{ $on_sale ? 'checked' : '' }} class="sr-only peer" value="">
                                 <div class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-yellow-300 dark:peer-focus:ring-yellow-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-yellow-600"></div>
                             </label>
-                        </div>
+                        </div>                        
                     </div>
 
                     <div class="flex items-center justify-end">

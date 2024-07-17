@@ -18,6 +18,8 @@ class Product extends Component
     use WithFileUploads;
     use LivewireAlert;
 
+    public $per_page = 6;
+
     #[Url]
     public $sort;
     #[Url]
@@ -33,6 +35,15 @@ class Product extends Component
     
     public $isEditMode = false;
     public $showModal = false;
+    function loadMore()
+    {
+        $this->per_page += 6;
+    }
+
+    public function toggleSalePrice()
+    {
+        $this->on_sale = $this->on_sale;
+    }
 
     protected $rules = [
         'name' => 'required|max:255',
@@ -112,7 +123,7 @@ class Product extends Component
             'name' => $this->name,
             'slug' => $this->slug,
             'price' => $this->price,
-            'sale_price' => $this->sale_price,
+            'sale_price' =>  $this->sale_price ? $this->sale_price : null,
             'description' => $this->description,
             'category_id' => $this->category_id,
             'images' => json_encode($imagesPath),
@@ -166,24 +177,36 @@ class Product extends Component
             'description' => 'nullable|string',
             'category_id' => 'required|exists:categories,id',
         ]);
-
+    
         $product = ModelsProduct::find($this->productId);
-
-        $imagesPath = $this->images;
+        
+        // Lấy những ảnh cũ
+        $oldImages = $product->images;
+        $imagesPath = [];
+    
         if (is_array($this->images)) {
             foreach ($this->images as $image) {
                 if ($image instanceof UploadedFile) {
                     $imagesPath[] = $image->store('products', 'public');
+                } elseif (is_string($image)) {
+                    $imagesPath[] = $image; 
                 }
             }
         }
-
+    
+        // xóa những ảnh cũ không có trong mảng hình ảnh mới
+        foreach ($oldImages as $oldImage) {
+            if (!in_array($oldImage, $imagesPath)) {
+                Storage::disk('public')->delete($oldImage);
+            }
+        }
+    
         if ($product) {
             $product->update([
                 'name' => $this->name,
                 'slug' => $this->slug,
                 'price' => $this->price,
-                'sale_price' => $this->sale_price,
+                'sale_price' => $this->sale_price ? $this->sale_price : null,
                 'description' => $this->description,
                 'category_id' => $this->category_id,
                 'images' => json_encode($imagesPath),
@@ -192,7 +215,7 @@ class Product extends Component
                 'in_stock' => $this->in_stock ? 1 : 0,
                 'on_sale' => $this->on_sale ? 1 : 0,
             ]);
-
+    
             $this->hideModal();
             $this->resetInputFields();
             $this->alert('success', 'Sửa thành công!', [
@@ -204,6 +227,7 @@ class Product extends Component
             session()->flash('error', 'Không tìm thấy sản phẩm');
         }
     }
+    
 
     public function delete($id)
     {
@@ -258,7 +282,7 @@ class Product extends Component
                     ->orWhere('slug', 'like', '%' . $this->search . '%');
             });
         }
-        $products = $query->paginate(10);
+        $products = $query->paginate($this->per_page);
 
         return view('livewire.admin.product', [
             'products' => $products,

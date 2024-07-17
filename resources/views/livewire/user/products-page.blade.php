@@ -112,11 +112,13 @@
             @endforeach
 
           </div>
-          <!-- pagination start -->
-          <div class="flex justify-end mt-6">
-            {!! $products->links() !!}
+          {{-- Phân trang --}}
+          <div class="mt-4 text-center">
+            @if (count($products) >= 9)
+                <button wire:loading.remove wire:click='loadMore' class="py-1 px-2 bg-blue-500 text-white rounded-lg hover:bg-red-600 mb-3">Xem thêm</button>
+                <button wire:loading wire:click='loadMore' class="py-1 px-2 bg-blue-500 text-white rounded-lg hover:bg-red-600 mb-3">Đang load...</button>
+            @endif
           </div>
-          <!-- pagination end -->
         </div>
       </div>
     </div>

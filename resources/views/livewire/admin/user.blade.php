@@ -19,6 +19,7 @@
                 <tr>
                     <th>Tên</th>
                     <th>Email</th>
+                    <th>Tài khoản</th>
                     <th>Role</th>
                     <th>Hành Động</th>
                 </tr>
@@ -29,6 +30,7 @@
                         <tr class="text-center">
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
+                            <td>{{ ($user->provider == 'google') ? 'Tài khoản google' : (($user->provider == 'facebook') ? 'Tài khoản facebook' : 'Tài khoản thường') }}</td>
                             <td>{!! $user->is_admin==1 ? '<i class="fa-solid fa-user-gear text-red-600"></i>' : '<i class="fa-solid fa-user text-blue-600"></i>' !!}</td>
                             <td colspan="2">
                                 <button wire:click="edit({{ $user->id }})" class="px-3 py-1.5 text-sm rounded bg-yellow-500 hover:bg-yellow-600 text-white"><i class="fa-solid fa-pen-to-square"></i></button>
@@ -39,13 +41,16 @@
 
                 @else
                     <tr>
-                        <td colspan="5" class="text-center text-red-600 mt-5">Chưa có dữ liệu</td>
+                        <td colspan="6" class="text-center text-red-600 mt-5">Chưa có dữ liệu</td>
                     </tr>
                 @endif
             </tbody>
         </table>
-        <div class="mt-4">
-            {{ $users->links() }}
+        <div class="mt-4 text-center">
+            @if (count($users) >= 10)
+                <button wire:loading.remove wire:click='loadMore' class="py-1 px-2 bg-blue-500 text-white rounded-lg hover:bg-red-600 mb-3">Xem thêm</button>
+                <button wire:loading wire:click='loadMore' class="py-1 px-2 bg-blue-500 text-white rounded-lg hover:bg-red-600 mb-3">Đang load...</button>
+            @endif
         </div>
     </div>
 

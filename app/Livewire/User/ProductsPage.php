@@ -14,6 +14,7 @@ class ProductsPage extends Component
     use WithPagination;
 
     use LivewireAlert;
+    public $per_page = 9;
 
     #[Url]
     public $selected_categories = [];
@@ -29,6 +30,10 @@ class ProductsPage extends Component
     public $sort;
     #[Url]
     public $search;
+    function loadMore()
+    {
+        $this->per_page += 6;
+    }
     public function render()
     {
         $productQuery = Product::query()->where('is_active', 1);
@@ -67,7 +72,7 @@ class ProductsPage extends Component
                 break;
         }
     
-        $products = $productQuery->paginate(9);
+        $products = $productQuery->paginate($this->per_page);
     
         return view('livewire.user.products-page', [
             'products' => $products,

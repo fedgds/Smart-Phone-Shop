@@ -13,6 +13,8 @@ class User extends Component
 {
     use LivewireAlert;
     use WithPagination;
+    
+    public $per_page = 15;
     #[Url]
     public $sort;
     #[Url]
@@ -24,6 +26,11 @@ class User extends Component
     public $userId;
     public $isEditMode = false;
     public $showModal = false;
+
+    function loadMore()
+    {
+        $this->per_page += 10;
+    }
 
     protected $rules = [
         'name' => 'required|max:255',
@@ -172,7 +179,7 @@ class User extends Component
             });
         }
     
-        $users = $query->paginate(15);
+        $users = $query->paginate($this->per_page);
     
         return view('livewire.admin.user', [
             'users' => $users,

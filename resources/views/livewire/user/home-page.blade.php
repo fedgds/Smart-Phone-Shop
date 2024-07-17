@@ -19,9 +19,15 @@
                         </li>
                       @endforeach
                     </ul>
+                    <div class="flex justify-center w-full mt-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                      </svg>                      
+                    </div>
                 </div>
                 
                 <img class="rounded-md" src="/img/banner1.jpg" alt="">
+                
             </div>
           </div>
           <!-- End Grid -->
@@ -35,11 +41,6 @@
           <div class="relative flex flex-col items-center">
             <h1 style="font-family: cursive" class="text-5xl dark:text-gray-200 mb-3">Sản phẩm <span class="text-blue-600">nổi bật</span></h1>
           </div>
-          <p class="mb-12 text-base text-center text-gray-500">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus magni eius eaque?
-            Pariatur
-            numquam, odio quod nobis ipsum ex cupiditate?
-          </p>
         </div>
       </div>
     
@@ -67,7 +68,14 @@
               </div>
             </a>
             @endforeach
+
     
+        </div>
+        <div class="mt-4 text-center">
+          @if (count($featured_products) >= 4)
+              <button wire:loading.remove wire:click='loadMoreFeatured' class="py-1 px-2 bg-blue-500 text-white rounded-lg hover:bg-red-600 mb-3">Xem thêm</button>
+              <button wire:loading wire:click='loadMoreFeatured' class="py-1 px-2 bg-blue-500 text-white rounded-lg hover:bg-red-600 mb-3">Đang load...</button>
+          @endif
         </div>
       </div>
     
@@ -78,13 +86,8 @@
         <div class="max-w-xl mx-auto">
           <div class="text-center ">
             <div class="relative flex flex-col items-center">
-              <h1 style="font-family: cursive" class="text-5xl dark:text-gray-200 mb-3"> Hợp tác với <span class="text-blue-600">Thương Hiệu</span></h1>
+              <h1 style="font-family: cursive" class="text-5xl dark:text-gray-200 mb-3"> Sản phẩm <span class="text-blue-600">mới nhất</span></h1>
             </div>
-            <p class="mb-12 text-base text-center text-gray-500">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus magni eius eaque?
-              Pariatur
-              numquam, odio quod nobis ipsum ex cupiditate?
-            </p>
           </div>
         </div>
         <div class="justify-center max-w-6xl px-4 py-4 mx-auto lg:py-0">
@@ -116,11 +119,6 @@
               <div class="relative flex flex-col items-center">
                 <h1 style="font-family: cursive" class="text-5xl dark:text-gray-200 mb-3"><span class="text-blue-500">Đánh giá</span> của khách hàng</h1>
               </div>
-              <p class="mb-12 text-base text-center text-gray-500">
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Delectus magni eius eaque?
-                Pariatur
-                numquam, odio quod nobis ipsum ex cupiditate?
-              </p>
             </div>
           </div>
       

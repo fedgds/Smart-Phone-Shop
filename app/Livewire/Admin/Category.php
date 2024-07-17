@@ -16,6 +16,7 @@ class Category extends Component
 {
     use WithFileUploads;
     use LivewireAlert;
+    public $per_page = 5;
     #[Url]
     public $sort;
     #[Url]
@@ -28,6 +29,11 @@ class Category extends Component
     
     public $isEditMode = false;
     public $showModal = false;
+
+    function loadMore()
+    {
+        $this->per_page += 5;
+    }
 
     protected $rules = [
         'name' => 'required|max:255',
@@ -191,7 +197,7 @@ class Category extends Component
             });
         }
     
-        $categories = $query->paginate(5);
+        $categories = $query->paginate($this->per_page);
 
         return view('livewire.admin.category', [
             'categories' => $categories
