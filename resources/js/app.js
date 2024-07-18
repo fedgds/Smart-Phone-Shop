@@ -1,4 +1,6 @@
 import './bootstrap';
+import 'preline'
+
 // Navbar dropdown
 document.querySelectorAll('.sidebar-dropdown-toggle').forEach(item => {
     item.addEventListener('click', function(e) {
