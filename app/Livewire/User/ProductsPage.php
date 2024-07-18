@@ -2,6 +2,8 @@
 
 namespace App\Livewire\User;
 
+use App\Helpers\CartManagement;
+use App\Livewire\User\Section\Navbar;
 use App\Models\Category;
 use App\Models\Product;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
@@ -33,6 +35,17 @@ class ProductsPage extends Component
     function loadMore()
     {
         $this->per_page += 6;
+    }
+    public function addToCart($product_id) {
+        $total_count = CartManagement::addItemToCart($product_id);
+
+        $this->dispatch('update-cart-count', total_count: $total_count)->to(Navbar::class);
+
+        $this->alert('success', 'Thêm vào giỏ thành công!', [
+            'position' => 'center',
+            'timer' => 3000,
+            'toast' => true,
+           ]);
     }
     public function render()
     {

@@ -75,7 +75,7 @@
                 <div class="border border-gray-300 dark:border-gray-700">
                   <div class="relative bg-gray-200">
                     <a href="/products/{{ $product->slug }}" class="">
-                      <img src="{{ url('storage', $product->images[0]) }}" alt="" class="object-cover w-full h-56 mx-auto ">
+                      <img src="{{ url('storage', $product->images[0]) }}" alt="" class="object-fill w-full h-56 mx-auto">
                     </a>
                   </div>
                   <div class="p-3 ">
