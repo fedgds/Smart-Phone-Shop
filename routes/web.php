@@ -10,7 +10,9 @@ use App\Livewire\User\Auth\LoginPage;
 use App\Livewire\User\Auth\RegisterPage;
 use App\Livewire\User\CartPage;
 use App\Livewire\User\CategoriesPage;
+use App\Livewire\User\CategoryDetailPage;
 use App\Livewire\User\HomePage;
+use App\Livewire\User\ProductDetailPage;
 use App\Livewire\User\ProductsPage;
 use Illuminate\Support\Facades\Route;
 
@@ -29,6 +31,8 @@ Route::get('/', HomePage::class)->name('home');
 Route::get('/categories', CategoriesPage::class);
 Route::get('/products', ProductsPage::class);
 Route::get('/cart', CartPage::class);
+Route::get('/products/{slug}', ProductDetailPage::class);
+Route::get('/categories/{slug}', CategoryDetailPage::class);
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', LoginPage::class)->name('login');

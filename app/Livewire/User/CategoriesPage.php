@@ -10,7 +10,7 @@ class CategoriesPage extends Component
 {
     use WithPagination;
     
-    public $per_page = 4; 
+    public $per_page = 5; 
     function loadMore()
     {
         $this->per_page += 2;

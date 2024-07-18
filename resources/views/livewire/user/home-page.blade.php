@@ -10,19 +10,23 @@
                     <ul class="flex flex-col gap-4">
                       @foreach ($categories as $category)
                         <li class="flex items-center gap-4 bg-white p-2 rounded-lg shadow-md hover:bg-gray-100 transition hover:cursor-pointer">
-                          <a href="category/{{ $category->slug }}">
+                          <a href="categories/{{ $category->slug }}">
                             <img class="w-15 h-10 object-cover rounded" src="{{ url('storage', $category->image) }}" alt="Dien thoai">
                           </a>
-                          <a href="category/{{ $category->slug }}">
+                          <a href="categories/{{ $category->slug }}">
                             <div style="font-family: cursive" class="text-lg font-medium hover:underline">{{ $category->name }}</div>
                           </a>
                         </li>
                       @endforeach
                     </ul>
                     <div class="flex justify-center w-full mt-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
-                      </svg>                      
+                      @if (count($categories_default) > 4)
+                        <button wire:click='loadMore'>
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                          </svg>  
+                        </button>
+                      @endif                    
                     </div>
                 </div>
                 
@@ -39,7 +43,7 @@
       <div class="max-w-xl mx-auto">
         <div class="text-center ">
           <div class="relative flex flex-col items-center">
-            <h1 style="font-family: cursive" class="text-5xl dark:text-gray-200 mb-3">Sản phẩm <span class="text-blue-600">nổi bật</span></h1>
+            <h1 style="font-family: cursive" class="text-5xl dark:text-gray-200 mb-5">Sản phẩm <span class="text-blue-600">nổi bật</span></h1>
           </div>
         </div>
       </div>
@@ -48,7 +52,7 @@
         <div class="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6">
     
           @foreach($featured_products as $product)
-            <a class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-slate-900 dark:border-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="product/{{$product->slug}}">
+            <a class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-slate-900 dark:border-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="products/{{$product->slug}}">
               <div class="p-4 md:p-5">
                 <div class="flex justify-between items-center">
                   <div class="flex items-center">
@@ -80,7 +84,7 @@
         <div class="max-w-xl mx-auto">
           <div class="text-center ">
             <div class="relative flex flex-col items-center">
-              <h1 style="font-family: cursive" class="text-5xl dark:text-gray-200 mb-3"> Sản phẩm <span class="text-blue-600">mới nhất</span></h1>
+              <h1 style="font-family: cursive" class="text-5xl dark:text-gray-200 mb-5"> Sản phẩm <span class="text-blue-600">mới nhất</span></h1>
             </div>
           </div>
         </div>
@@ -88,7 +92,7 @@
           <div class="grid grid-cols-1 gap-6 lg:grid-cols-4 md:grid-cols-2">
             
             @foreach($latest_products as $product)
-            <a class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-slate-900 dark:border-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="product/{{$product->slug}}">
+            <a class="group flex flex-col bg-white border shadow-sm rounded-xl hover:shadow-md transition dark:bg-slate-900 dark:border-gray-800 dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600" href="products/{{$product->slug}}">
               <div class="p-4 md:p-5">
                 <div class="flex justify-between items-center">
                   <div class="flex items-center">
@@ -120,7 +124,7 @@
           <div class="max-w-xl mx-auto">
             <div class="text-center ">
               <div class="relative flex flex-col items-center">
-                <h1 style="font-family: cursive" class="text-5xl dark:text-gray-200 mb-3"><span class="text-blue-500">Đánh giá</span> của khách hàng</h1>
+                <h1 style="font-family: cursive" class="text-5xl dark:text-gray-200 mb-5"><span class="text-blue-500">Đánh giá</span> của khách hàng</h1>
               </div>
             </div>
           </div>
@@ -142,8 +146,7 @@
                 </p>
               </div>
               <p class="px-6 mb-6 text-base text-gray-500 dark:text-gray-400">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem cupiditate similique,
-                iure minus sed fugit obcaecati minima quam reiciendis dicta!
+                Điện thoại rất hay, tôi rất sướng!
               </p>
               <div class="flex flex-wrap justify-between pt-4 border-t dark:border-gray-700">
                 <div class="flex px-6 mb-2 md:mb-0">
@@ -180,9 +183,17 @@
                         </svg>
                       </a>
                     </li>
+                    <li>
+                      <a href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 mr-1 text-blue-500 dark:text-blue-400 bi bi-star-fill" viewBox="0 0 16 16">
+                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z">
+                          </path>
+                        </svg>
+                      </a>
+                    </li>
                   </ul>
                   <h2 class="text-sm text-gray-500 dark:text-gray-400">Rating:<span class="font-semibold text-gray-600 dark:text-gray-300">
-                      3.0</span>
+                      5.0</span>
                   </h2>
                 </div>
                 <div class="flex items-center px-6 space-x-1 text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -201,7 +212,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 h-4 mr-1 text-blue-400 bi bi-chat" viewBox="0 0 16 16">
                           <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z">
                           </path>
-                        </svg>Reply</a>
+                        </svg>Trả lời</a>
                     </div>
                   </div>
                 </div>
@@ -223,8 +234,7 @@
                 </p>
               </div>
               <p class="px-6 mb-6 text-base text-gray-500 dark:text-gray-400">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem cupiditate similique,
-                iure minus sed fugit obcaecati minima quam reiciendis dicta!
+                Samsung không có cái nào dưới 1 triệu hả?
               </p>
               <div class="flex flex-wrap justify-between pt-4 border-t dark:border-gray-700">
                 <div class="flex px-6 mb-2 md:mb-0">
@@ -237,33 +247,9 @@
                         </svg>
                       </a>
                     </li>
-                    <li>
-                      <a href="#">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 mr-1 text-blue-500 dark:text-blue-400 bi bi-star-fill" viewBox="0 0 16 16">
-                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z">
-                          </path>
-                        </svg>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 mr-1 text-blue-500 dark:text-blue-400 bi bi-star-fill" viewBox="0 0 16 16">
-                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z">
-                          </path>
-                        </svg>
-                      </a>
-                    </li>
-                    <li>
-                      <a href="#">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 mr-1 text-blue-500 dark:text-blue-400 bi bi-star-fill" viewBox="0 0 16 16">
-                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z">
-                          </path>
-                        </svg>
-                      </a>
-                    </li>
                   </ul>
                   <h2 class="text-sm text-gray-500 dark:text-gray-400">Rating:<span class="font-semibold text-gray-600 dark:text-gray-300">
-                      3.0</span>
+                      1.0</span>
                   </h2>
                 </div>
                 <div class="flex items-center px-6 space-x-1 text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -280,7 +266,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 h-4 mr-1 text-blue-400 bi bi-chat" viewBox="0 0 16 16">
                           <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z">
                           </path>
-                        </svg>Reply</a>
+                        </svg>Trả lời</a>
                     </div>
                   </div>
                 </div>
@@ -302,8 +288,7 @@
                 </p>
               </div>
               <p class="px-6 mb-6 text-base text-gray-500 dark:text-gray-400">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem cupiditate similique,
-                iure minus sed fugit obcaecati minima quam reiciendis dicta!
+                Tôi cần điện thoại cục gạch!
               </p>
               <div class="flex flex-wrap justify-between pt-4 border-t dark:border-gray-700">
                 <div class="flex px-6 mb-2 md:mb-0">
@@ -342,7 +327,7 @@
                     </li>
                   </ul>
                   <h2 class="text-sm text-gray-500 dark:text-gray-400">Rating:<span class="font-semibold text-gray-600 dark:text-gray-300">
-                      3.0</span>
+                      4.0</span>
                   </h2>
                 </div>
                 <div class="flex items-center px-6 space-x-1 text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -352,14 +337,14 @@
                           <path d="M6.956 1.745C7.021.81 7.908.087 8.864.325l.261.066c.463.116.874.456 1.012.965.22.816.533 2.511.062 4.51a9.84 9.84 0 0 1 .443-.051c.713-.065 1.669-.072 2.516.21.518.173.994.681 1.2 1.273.184.532.16 1.162-.234 1.733.058.119.103.242.138.363.077.27.113.567.113.856 0 .289-.036.586-.113.856-.039.135-.09.273-.16.404.169.387.107.819-.003 1.148a3.163 3.163 0 0 1-.488.901c.054.152.076.312.076.465 0 .305-.089.625-.253.912C13.1 15.522 12.437 16 11.5 16H8c-.605 0-1.07-.081-1.466-.218a4.82 4.82 0 0 1-.97-.484l-.048-.03c-.504-.307-.999-.609-2.068-.722C2.682 14.464 2 13.846 2 13V9c0-.85.685-1.432 1.357-1.615.849-.232 1.574-.787 2.132-1.41.56-.627.914-1.28 1.039-1.639.199-.575.356-1.539.428-2.59z">
                           </path>
                         </svg></a>
-                      <span>12</span>
+                      <span>10</span>
                     </div>
                     <div class="flex text-sm text-gray-700 dark:text-gray-400">
                       <a href="#" class="inline-flex hover:underline">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 h-4 mr-1 text-blue-400 bi bi-chat" viewBox="0 0 16 16">
                           <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z">
                           </path>
-                        </svg>Reply</a>
+                        </svg>Trả lời</a>
                     </div>
                   </div>
                 </div>
@@ -381,8 +366,7 @@
                 </p>
               </div>
               <p class="px-6 mb-6 text-base text-gray-500 dark:text-gray-400">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Autem cupiditate similique,
-                iure minus sed fugit obcaecati minima quam reiciendis dicta!
+                Thời nay ai dùng cục gạch nữa!
               </p>
               <div class="flex flex-wrap justify-between pt-4 border-t dark:border-gray-700">
                 <div class="flex px-6 mb-2 md:mb-0">
@@ -419,9 +403,17 @@
                         </svg>
                       </a>
                     </li>
+                    <li>
+                      <a href="#">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 mr-1 text-blue-500 dark:text-blue-400 bi bi-star-fill" viewBox="0 0 16 16">
+                          <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z">
+                          </path>
+                        </svg>
+                      </a>
+                    </li>
                   </ul>
                   <h2 class="text-sm text-gray-500 dark:text-gray-400">Rating:<span class="font-semibold text-gray-600 dark:text-gray-300">
-                      3.0</span>
+                      5.0</span>
                   </h2>
                 </div>
                 <div class="flex items-center px-6 space-x-1 text-sm font-medium text-gray-500 dark:text-gray-400">
@@ -438,7 +430,7 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="w-4 h-4 mr-1 text-blue-400 bi bi-chat" viewBox="0 0 16 16">
                           <path d="M2.678 11.894a1 1 0 0 1 .287.801 10.97 10.97 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8.06 8.06 0 0 0 8 14c3.996 0 7-2.807 7-6 0-3.192-3.004-6-7-6S1 4.808 1 8c0 1.468.617 2.83 1.678 3.894zm-.493 3.905a21.682 21.682 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a9.68 9.68 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9.06 9.06 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105z">
                           </path>
-                        </svg>Reply</a>
+                        </svg>Trả lời</a>
                     </div>
                   </div>
                 </div>

@@ -25,8 +25,8 @@
                     <td class="py-4">
                       <span class="font-semibold">{{ $item['name'] }}</span>
                     </td>
-                    <td>
-                      <img class="h-16 w-16 mr-4" src="{{ url('storage', $item['image']) }}" alt="">
+                    <td class="flex justify-center">
+                      <img class="object-fill border border-gray-400 rounded-md h-16 w-16 mr-4" src="{{ url('storage', $item['image']) }}" alt="">
                     </td>
                     <td class="py-4">
                       {{ number_format($item['unit_amount']) }} đ

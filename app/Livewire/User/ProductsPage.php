@@ -89,7 +89,7 @@ class ProductsPage extends Component
     
         return view('livewire.user.products-page', [
             'products' => $products,
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 }
