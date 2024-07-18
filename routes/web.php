@@ -45,7 +45,7 @@ Route::middleware('auth')->group(function () {
         auth()->logout();
         return redirect('/');
     });
-    Route::prefix('admin')->group(function () {
+    Route::middleware('admin')->prefix('admin')->group(function () {
         Route::get('/', Dashboard::class)->name('admin.dashboard');
         Route::get('/user', User::class)->name('admin.user');
         Route::get('/category', Category::class)->name('admin.category');

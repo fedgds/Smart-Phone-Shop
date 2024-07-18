@@ -108,6 +108,7 @@ class Category extends Component
             'toast' => true,
         ]);
     }
+    
     public function edit($id)
     {
         $category = ModelsCategory::find($id);
@@ -126,40 +127,40 @@ class Category extends Component
     }
     
     public function update()
-{
-    $this->validate([
-        'name' => 'required|max:255',
-        'slug' => ['required', 'max:255', Rule::unique('categories')->ignore($this->categoryId)],
-    ]);
+    {
+        $this->validate([
+            'name' => 'required|max:255',
+            'slug' => ['required', 'max:255', Rule::unique('categories')->ignore($this->categoryId)],
+        ]);
 
-    $category = ModelsCategory::find($this->categoryId);
+        $category = ModelsCategory::find($this->categoryId);
 
-    if ($this->image instanceof UploadedFile) {
-        if ($category->image) {
-            Storage::disk('public')->delete($category->image);
+        if ($this->image instanceof UploadedFile) {
+            if ($category->image) {
+                Storage::disk('public')->delete($category->image);
+            }
+            $imagePath = $this->image->store('categories', 'public');
+            $category->image = $imagePath;
         }
-        $imagePath = $this->image->store('categories', 'public');
-        $category->image = $imagePath;
-    }
 
-    if ($category) {
-        $category->update([
-            'name' => $this->name,
-            'slug' => $this->slug,
-            'is_active' => $this->is_active ? 1 : 0,
-        ]);
+        if ($category) {
+            $category->update([
+                'name' => $this->name,
+                'slug' => $this->slug,
+                'is_active' => $this->is_active ? 1 : 0,
+            ]);
 
-        $this->hideModal();
-        $this->resetInputFields();
-        $this->alert('success', 'Sửa thành công!', [
-            'position' => 'center',
-            'timer' => 3000,
-            'toast' => true,
-        ]);
-    } else {
-        session()->flash('error', 'Không tìm thấy danh mục');
+            $this->hideModal();
+            $this->resetInputFields();
+            $this->alert('success', 'Sửa thành công!', [
+                'position' => 'center',
+                'timer' => 3000,
+                'toast' => true,
+            ]);
+        } else {
+            session()->flash('error', 'Không tìm thấy danh mục');
+        }
     }
-}
     public function delete($id)
     {
         $category = ModelsCategory::findOrFail($id);
