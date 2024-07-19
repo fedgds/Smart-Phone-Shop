@@ -11,6 +11,7 @@ use App\Livewire\User\Auth\RegisterPage;
 use App\Livewire\User\CartPage;
 use App\Livewire\User\CategoriesPage;
 use App\Livewire\User\CategoryDetailPage;
+use App\Livewire\User\CheckoutPage;
 use App\Livewire\User\HomePage;
 use App\Livewire\User\ProductDetailPage;
 use App\Livewire\User\ProductsPage;
@@ -40,7 +41,7 @@ Route::middleware('guest')->group(function () {
     Route::get('/register', RegisterPage::class);
 
     Route::get('/auth/{provider}/redirect', [ProviderController::class, 'redirect']);
-    
+
     Route::get('/auth/{provider}/callback', [ProviderController::class, 'callback']);
 });
 
@@ -49,6 +50,8 @@ Route::middleware('auth')->group(function () {
         auth()->logout();
         return redirect('/');
     });
+    Route::get('/checkout', CheckoutPage::class);
+    
     Route::middleware('admin')->prefix('admin')->group(function () {
         Route::get('/', Dashboard::class)->name('admin.dashboard');
         Route::get('/user', User::class)->name('admin.user');
