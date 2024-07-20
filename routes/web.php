@@ -6,6 +6,7 @@ use App\Livewire\Admin\Category;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Product;
 use App\Livewire\Admin\User;
+use App\Livewire\Admin\Voucher;
 use App\Livewire\User\Auth\LoginPage;
 use App\Livewire\User\Auth\RegisterPage;
 use App\Livewire\User\CartPage;
@@ -57,6 +58,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/user', User::class)->name('admin.user');
         Route::get('/category', Category::class)->name('admin.category');
         Route::get('/product', Product::class)->name('admin.product');
+        Route::get('/voucher', Voucher::class)->name('admin.voucher');
         Route::get('/banner', Banner::class)->name('admin.banner');
     });
 });

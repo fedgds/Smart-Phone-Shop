@@ -17,6 +17,8 @@ return new class extends Migration
             $table->integer('discount');
             $table->string('discount_type');
             $table->integer('usage_limit');
+            $table->integer('min_order_value')->nullable();
+            $table->integer('max_order_value')->nullable();
             $table->timestamp('start_date')->nullable();
             $table->timestamp('end_date')->nullable();
             $table->string('status');

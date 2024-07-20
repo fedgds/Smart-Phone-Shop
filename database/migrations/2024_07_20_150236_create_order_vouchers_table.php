@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('voucher_products', function (Blueprint $table) {
+        Schema::create('order_vouchers', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id')->constrained('products')->cascadeOnDelete();
+            $table->foreignId('order_id')->constrained('orders')->cascadeOnDelete();
             $table->foreignId('voucher_id')->constrained('vouchers')->cascadeOnDelete();
+            $table->integer('discount_amount');
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('voucher_products');
+        Schema::dropIfExists('order_vouchers');
     }
 };
