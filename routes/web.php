@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\Auth\ProviderController;
+use App\Http\Controllers\PaymentController;
 use App\Livewire\Admin\Banner;
 use App\Livewire\Admin\Category;
 use App\Livewire\Admin\Dashboard;
 use App\Livewire\Admin\Product;
 use App\Livewire\Admin\User;
 use App\Livewire\Admin\Voucher;
+use App\Livewire\User\AccountPage;
 use App\Livewire\User\Auth\LoginPage;
 use App\Livewire\User\Auth\RegisterPage;
 use App\Livewire\User\CartPage;
@@ -14,8 +16,11 @@ use App\Livewire\User\CategoriesPage;
 use App\Livewire\User\CategoryDetailPage;
 use App\Livewire\User\CheckoutPage;
 use App\Livewire\User\HomePage;
+use App\Livewire\User\MyOrderDetailPage;
+use App\Livewire\User\MyOrdersPage;
 use App\Livewire\User\ProductDetailPage;
 use App\Livewire\User\ProductsPage;
+use App\Livewire\User\SuccessPage;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -52,6 +57,12 @@ Route::middleware('auth')->group(function () {
         return redirect('/');
     });
     Route::get('/checkout', CheckoutPage::class);
+    Route::get('/my-orders', MyOrdersPage::class);
+    Route::get('/my-orders/{id}', MyOrderDetailPage::class);
+    Route::get('/account', AccountPage::class);
+    Route::get('/order-success/{order}', SuccessPage::class)->name('order.success');
+
+    Route::post('/vnpay_payment', [PaymentController::class, 'vnpay_payment']);
     
     Route::middleware('admin')->prefix('admin')->group(function () {
         Route::get('/', Dashboard::class)->name('admin.dashboard');

@@ -75,7 +75,7 @@
     <!-- Modal -->
     @if ($showModal)
         <div class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-50">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-3/6">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-3/6 max-h-[700px] overflow-auto">
                 <h2 class="text-2xl text-center py-2">{{ $isEditMode ? 'Sửa sản phẩm' : 'Thêm sản phẩm' }}</h2>
                 <form wire:submit.prevent="{{ $isEditMode ? 'update' : 'store' }}">
 

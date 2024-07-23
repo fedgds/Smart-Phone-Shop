@@ -14,12 +14,10 @@ class Voucher extends Model
         'discount',
         'discount_type',
         'usage_limit',
+        'min_order_value',
+        'max_order_value',
         'start_date',
         'end_date',
         'status',
     ];
-    public function products(): BelongsToMany
-    {
-        return $this->belongsToMany(Product::class, 'voucher_products', 'voucher_id', 'product_id');
-    }
 }

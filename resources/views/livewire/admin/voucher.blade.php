@@ -20,6 +20,8 @@
                     <th>Mã</th>
                     <th>Loại giảm giá</th>
                     <th>Giảm giá</th>
+                    <th>Đơn nhỏ nhất</th>
+                    <th>Đơn lớn nhất</th>
                     <th>Ngày bắt đầu</th>
                     <th>Ngày kết thúc</th>
                     <th>Trạng thái</th>
@@ -32,7 +34,9 @@
                         <tr class="text-center">
                             <td>{{ $voucher->code }}</td>
                             <td>{{ $voucher->discount_type == 'fixed' ? 'VND' : '%' }}</td>
-                            <td>{{ number_format($voucher->discount) }}</td>
+                            <td>{{ number_format($voucher->discount) }}{{ $voucher->discount_type == 'fixed' ? ' đ' : ' %' }}</td>
+                            <td>{{ $voucher->min_order_value != null ? number_format($voucher->min_order_value).' đ' : '' }}</td>
+                            <td>{{ $voucher->max_order_value != null ? number_format($voucher->max_order_value).' đ' : '' }}</td>
                             <td>{{ date('d/m/Y', strtotime($voucher->start_date)) }}</td>
                             <td>{{ date('d/m/Y', strtotime($voucher->end_date)) }}</td>
                             <td>{!! $voucher->status == 1 ? '<i class="fa-solid fa-check text-blue-600"></i>' : '<i class="fa-solid fa-xmark text-red-600"></i>' !!}</td>
@@ -60,7 +64,7 @@
     <!-- Modal -->
     @if($showModal)
         <div class="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-75 z-50">
-            <div class="bg-white p-6 rounded-lg shadow-lg w-2/5">
+            <div class="bg-white p-6 rounded-lg shadow-lg w-2/5 max-h-[700px] overflow-auto">
                 <form wire:submit.prevent="{{ $isEditMode ? 'update' : 'store' }}">
                     <h2 class="text-2xl text-center py-4">{{ $isEditMode ? 'Sửa tài khoản' : 'Tạo tài khoản' }}</h2>
                     <div class="mb-4">
@@ -90,6 +94,18 @@
                     </div>
                     <div class="mb-4 flex gap-2">
                         <div class="w-1/2">
+                            <label for="min_order_value" class="block text-gray-700">Đơn nhỏ nhất</label>
+                            <input type="number" id="min_order_value" wire:model="min_order_value" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md" />
+                            @error('min_order_value') <span class="text-red-500">{{ $message }}</span> @enderror
+                        </div>
+                        <div class="w-1/2">
+                            <label for="max_order_value" class="block text-gray-700">Đơn lớn nhất</label>
+                            <input type="number" id="max_order_value" wire:model="max_order_value" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md" />
+                            @error('max_order_value') <span class="text-red-500">{{ $message }}</span> @enderror
+                        </div>
+                    </div>
+                    <div class="mb-4 flex gap-2">
+                        <div class="w-1/2">
                             <label for="start_date" class="block text-gray-700">Ngày bắt đầu</label>
                             <input type="date" id="start_date" wire:model="start_date" class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md" />
                             @error('start_date') <span class="text-red-500">{{ $message }}</span> @enderror
@@ -107,15 +123,6 @@
                             <option value="1">Kích hoạt</option>
                         </select>
                         @error('status') <span class="text-red-500">{{ $message }}</span> @enderror
-                    </div>
-                    <div class="mb-4">
-                        <label for="products" class="block text-gray-700">Áp dụng với sản phẩm</label>
-                        <select id="products" wire:model="products" multiple class="mt-1 block w-full px-3 py-2 border-2 border-gray-400 rounded-md">
-                            @foreach($list_products as $product)
-                                <option value="{{ $product->id }}">{{ $product->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('products') <span class="text-red-500">{{ $message }}</span> @enderror
                     </div>
                     
                     <div class="flex items-center justify-end">

@@ -1,7 +1,8 @@
 <div class="w-full max-w-[85rem] py-10 px-4 sm:px-6 lg:px-8 mx-auto">
 	<section class="py-10 bg-gray-50 font-poppins dark:bg-gray-800 rounded-lg p-4">
 		<h1 style="font-family: cursive" class="text-center mb-5 text-5xl text-blue-600">Thanh toán</h1>
-		<form wire:submit.prevent='placeOrder'>
+		<form action="{{ url('/vnpay_payment') }}" method="POST">
+			@csrf
 			<div class="grid grid-cols-12 gap-4">
 				<div class="md:col-span-12 lg:col-span-8 col-span-12">
 					<!-- Card -->
@@ -15,7 +16,7 @@
 								<label class="block text-gray-700 dark:text-white mb-1" for="name">
 									Họ và Tên
 								</label>
-								<input wire:model='full_name' class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" id="name" type="text" placeholder="Nhập họ và tên"></input>
+								<input name='full_name' value="{{ old('full_name') }}" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" id="name" type="text" placeholder="Nhập họ và tên"></input>
 								@error('full_name')
 									<p class="text-xs text-red-600 mt-2">{{ $message }}</p>
 								@enderror
@@ -24,8 +25,8 @@
 								<label class="block text-gray-700 dark:text-white mb-1" for="phone">
 									Số điện thoại
 								</label>
-								<input wire:model='phone' class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" id="phone" type="text" placeholder="Nhập số điện thoại"></input>
-								@error('phone')
+								<input name='phone_number' value="{{ old('phone_number') }}" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" id="phone" type="text" placeholder="Nhập số điện thoại"></input>
+								@error('phone_number')
 									<p class="text-xs text-red-600 mt-2">{{ $message }}</p>
 								@enderror
 							</div>
@@ -34,7 +35,7 @@
 									<label class="block text-gray-700 dark:text-white mb-1" for="city">
 										Thành phố
 									</label>
-									<select wire:model='city' class="form-select city w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" id="city" onchange="loadDistrict()">
+									<select name='city' class="form-select city w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" id="city" onchange="loadDistrict()">
 										<option selected>Chọn thành phố</option>
 									</select>
 									@error('city')
@@ -45,7 +46,7 @@
 									<label class="block text-gray-700 dark:text-white mb-1" for="district">
 										Quận/Huyện
 									</label>
-									<select wire:model='district' class="form-select district w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" id="district">
+									<select name='district' class="form-select district w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" id="district">
 										<option selected>Chọn quận huyện</option>
 									</select>
 									@error('district')
@@ -57,7 +58,7 @@
 								<label class="block text-gray-700 dark:text-white mb-1" for="address">
 									Địa chỉ
 								</label>
-								<input wire:model='address' class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" id="address" type="text" placeholder="Nhập địa chỉ"></input>
+								<input name='address' value="{{ old('address') }}" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" id="address" type="text" placeholder="Nhập địa chỉ"></input>
 								@error('address')
 									<p class="text-xs text-red-600 mt-2">{{ $message }}</p>
 								@enderror
@@ -66,43 +67,18 @@
 								<label class="block text-gray-700 dark:text-white mb-1" for="note">
 									Ghi chú
 								</label>
-								<textarea wire:model='notes' class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" id="note" type="text" placeholder="Ghi chú"></textarea>
+								<textarea name='notes' value="{{ old('notes') }}" class="w-full rounded-lg border py-2 px-3 dark:bg-gray-700 dark:text-white dark:border-none" id="note" type="text" placeholder="Ghi chú"></textarea>
 							</div>
 						</div>
 						<div class="text-lg font-semibold mb-4">
 							Chọn phương thức thanh toán
 						</div>
-						<ul class="grid w-full gap-6 md:grid-cols-2">
-							<li>
-								<input wire:model='payment_method' value="cod" class="hidden peer" id="hosting-big" type="radio">
-								<label class="inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700" for="hosting-big">
-									<div class="block">
-										<div class="w-full text-lg font-semibold">
-											Tiền mặt
-										</div>
-									</div>
-									<svg aria-hidden="true" class="w-5 h-5 ms-3 rtl:rotate-180" fill="none" viewbox="0 0 14 10" xmlns="http://www.w3.org/2000/svg">
-										<path d="M1 5h12m0 0L9 1m4 4L9 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-										</path>
-									</svg>
-								</label>
-								</input>
-							</li>
-							<li>
-								<input wire:model='payment_method' value="momo" class="hidden peer" id="hosting-small" type="radio"/>
-								<label class="inline-flex items-center justify-between w-full p-5 text-gray-900 bg-white border border-gray-200 rounded-lg cursor-pointer dark:hover:text-gray-300 dark:border-gray-700 dark:peer-checked:text-blue-500 peer-checked:border-blue-600 peer-checked:text-blue-600 hover:text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:bg-gray-800 dark:hover:bg-gray-700" for="hosting-small">
-									<div class="block">
-										<div class="w-full text-lg font-semibold">
-											Momo
-										</div>
-									</div>
-									<svg aria-hidden="true" class="w-5 h-5 ms-3 rtl:rotate-180" fill="none" viewbox="0 0 14 10" xmlns="http://www.w3.org/2000/svg">
-										<path d="M1 5h12m0 0L9 1m4 4L9 9" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-										</path>
-									</svg>
-								</label>
-							</li>
-						</ul>
+						<div class="flex justify-center">
+							<select name="payment_method" id="" class="border border-gray-500 rounded-lg py-1 px-3 bg-black text-white">
+								<option value="cod">Trả tiền khi nhận hàng</option>
+								<option value="vnpay">Thanh toán VN PAY</option>
+							</select>
+						</div>
 					</div>
 					<!-- End Card -->
 				</div>
@@ -146,7 +122,8 @@
 						</div>
 						</hr>
 					</div>
-					<button type="submit" class="bg-gray-900 mt-4 w-full p-3 rounded-lg text-lg text-white hover:bg-gray-800">
+					<input type="hidden" name="grand_total" value="{{ $grand_total }}">
+					<button type="submit" name="redirect" class="bg-gray-900 mt-4 w-full p-3 rounded-lg text-lg text-white hover:bg-gray-800">
 						Đặt hàng
 					</button>
 					<div class="bg-white mt-4 rounded-xl shadow p-4 sm:p-7 dark:bg-slate-900">

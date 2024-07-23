@@ -23,7 +23,7 @@ class Voucher extends Component
     #[Url]
     public $search;
 
-    public $code, $discount, $discount_type, $usage_limit, $start_date, $end_date, $status;
+    public $code, $discount, $discount_type, $usage_limit, $min_order_value, $max_order_value, $start_date, $end_date, $status;
     public $products = [];
     public $voucherId;
     public $isEditMode = false;
@@ -38,6 +38,8 @@ class Voucher extends Component
         'code' => 'required|max:255|unique:vouchers,code',
         'discount' => 'required|numeric',
         'usage_limit' => 'required|numeric',
+        'min_order_value' => 'numeric',
+        'max_order_value' => 'numeric|gt:min_order_value',
         'start_date' => 'required|date',
         'end_date' => 'required|date|after_or_equal:start_date',
     ];
@@ -48,8 +50,11 @@ class Voucher extends Component
         'code.unique' => 'Mã voucher đã tồn tại',
         'discount.required' => 'Vui lòng nhập số tiền giảm giá',
         'discount.numeric' => 'Giá trị giảm giá phải là số',
-        'usage_limit.required' => 'Vui lòng nhập giới hạn',
-        'usage_limit.numeric' => 'Giới hạn giảm giá phải là số',
+        'usage_limit.required' => 'Vui lòng nhập số lượng mã',
+        'usage_limit.numeric' => 'Số lượng mã giảm giá phải là số',
+        'min_order_value.numeric' => 'Áp dụng cho đơn hàng nhỏ nhất phải là số',
+        'max_order_value.numeric' => 'Áp dụng cho đơn hàng lớn nhất phải là số',
+        'max_order_value.gt' => 'Áp dụng cho đơn hàng lớn nhất phải > đơn hàng nhỏ nhất',
         'start_date.required' => 'Vui lòng nhập ngày bắt đầu',
         'start_date.date' => 'Ngày bắt đầu không đúng định dạng',
         'end_date.required' => 'Vui lòng nhập ngày kết thúc',
@@ -73,6 +78,9 @@ class Voucher extends Component
         $this->code = '';
         $this->discount = '';
         $this->discount_type = '';
+        $this->usage_limit = '';
+        $this->min_order_value = '';
+        $this->max_order_value = '';
         $this->start_date = '';
         $this->end_date = '';
         $this->status = '';
@@ -91,22 +99,21 @@ class Voucher extends Component
     {
         $this->validate();
 
-        DB::transaction(function () {
-            $voucher = ModelsVoucher::create([
-                'code' => $this->code,
-                'discount' => $this->discount,
-                'discount_type' => $this->discount_type,
-                'usage_limit' => $this->usage_limit,
-                'start_date' => $this->start_date,
-                'end_date' => $this->end_date,
-                'status' => $this->status,
-            ]);
-
-            $voucher->products()->sync($this->products);
-        });
+        ModelsVoucher::create([
+            'code' => $this->code,
+            'discount' => $this->discount,
+            'usage_limit' => $this->usage_limit,
+            'min_order_value' => $this->min_order_value,
+            'max_order_value' => $this->max_order_value,
+            'discount_type' => $this->discount_type,
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date,
+            'status' => $this->status,
+        ]);
 
         $this->hideModal();
         $this->resetInputFields();
+
         $this->alert('success', 'Tạo thành công!', [
             'position' => 'center',
             'timer' => 3000,
@@ -116,17 +123,18 @@ class Voucher extends Component
 
     public function edit($id)
     {
-        $voucher = ModelsVoucher::with('products')->find($id);
+        $voucher = ModelsVoucher::find($id);
     
         if ($voucher) {
             $this->code = $voucher->code;
             $this->discount = $voucher->discount;
             $this->discount_type = $voucher->discount_type;
             $this->usage_limit = $voucher->usage_limit;
+            $this->min_order_value = $voucher->min_order_value;
+            $this->max_order_value = $voucher->max_order_value;
             $this->start_date = Carbon::parse($voucher->start_date)->format('Y-m-d');
             $this->end_date = Carbon::parse($voucher->end_date)->format('Y-m-d');
             $this->status = $voucher->status;
-            $this->products = $voucher->products->pluck('id')->toArray();
             $this->voucherId = $voucher->id;
             $this->isEditMode = true;
             $this->showModal();
@@ -141,39 +149,38 @@ class Voucher extends Component
             'code' => ['required', 'string', 'max:255', Rule::unique('vouchers')->ignore($this->voucherId)],
             'discount' => 'required|numeric',
             'usage_limit' => 'required|numeric',
+            'min_order_value' => 'numeric',
+            'max_order_value' => 'numeric|gt:min_order_value',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
             'status' => 'required|boolean',
             'products' => 'array'
         ]);
 
-        DB::transaction(function () {
-            $voucher = ModelsVoucher::find($this->voucherId);
+        $voucher = ModelsVoucher::find($this->voucherId);
+        if ($voucher) {
+            $voucher->update([
+                'code' => $this->code,
+                'discount' => $this->discount,
+                'usage_limit' => $this->usage_limit,
+                'min_order_value' => $this->min_order_value,
+                'max_order_value' => $this->max_order_value,
+                'discount_type' => $this->discount_type,
+                'start_date' => $this->start_date,
+                'end_date' => $this->end_date,
+                'status' => $this->status,
+            ]);
     
-            if ($voucher) {
-                $voucher->update([
-                    'code' => $this->code,
-                    'discount' => $this->discount,
-                    'usage_limit' => $this->usage_limit,
-                    'discount_type' => $this->discount_type,
-                    'start_date' => $this->start_date,
-                    'end_date' => $this->end_date,
-                    'status' => $this->status,
-                ]);
-
-                $voucher->products()->sync($this->products);
-    
-                $this->hideModal();
-                $this->resetInputFields();
-                $this->alert('success', 'Sửa thành công!', [
-                    'position' => 'center',
-                    'timer' => 3000,
-                    'toast' => true,
-                ]);
-            } else {
-                session()->flash('error', 'Không tìm thấy voucher');
-            }
-        });
+            $this->hideModal();
+            $this->resetInputFields();
+            $this->alert('success', 'Sửa thành công!', [
+                'position' => 'center',
+                'timer' => 3000,
+                'toast' => true,
+            ]);
+        } else {
+            session()->flash('error', 'Không tìm thấy sản phẩm');
+        }
     }    
     
     public function delete($id)
