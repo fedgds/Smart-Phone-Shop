@@ -86,7 +86,7 @@ class PaymentController extends Controller
                 echo json_encode($returnData);
             }
 
-            Order::create([
+            $order = Order::create([
                 'user_id' => $user->id,
                 'grand_total' => $data['grand_total'],
                 'final_total' => $data['grand_total'],
@@ -98,6 +98,20 @@ class PaymentController extends Controller
                 'address' => $data['address'],
                 'notes' => $data['notes']
             ]);
+
+            // Thêm vào bảng order_items
+            foreach ($cart_items as $item) {
+                OrderItem::create([
+                    'order_id' => $order->id,
+                    'product_id' => $item['product_id'],
+                    'quantity' => $item['quantity'],
+                    'unit_price' => $item['unit_amount'],
+                    'total_price' => $item['total_amount'],
+                ]);
+            }
+
+            // Xóa giỏ
+            CartManagement::clearCartItems();
         }
         // dd($data);
 

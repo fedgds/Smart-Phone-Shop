@@ -5,11 +5,13 @@ use App\Http\Controllers\PaymentController;
 use App\Livewire\Admin\Banner;
 use App\Livewire\Admin\Category;
 use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\Order;
 use App\Livewire\Admin\Product;
 use App\Livewire\Admin\User;
 use App\Livewire\Admin\Voucher;
 use App\Livewire\User\AccountPage;
 use App\Livewire\User\Auth\LoginPage;
+use App\Livewire\User\Auth\LogoutPage;
 use App\Livewire\User\Auth\RegisterPage;
 use App\Livewire\User\CartPage;
 use App\Livewire\User\CategoriesPage;
@@ -21,6 +23,7 @@ use App\Livewire\User\MyOrdersPage;
 use App\Livewire\User\ProductDetailPage;
 use App\Livewire\User\ProductsPage;
 use App\Livewire\User\SuccessPage;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -56,6 +59,7 @@ Route::middleware('auth')->group(function () {
         auth()->logout();
         return redirect('/');
     });
+
     Route::get('/checkout', CheckoutPage::class);
     Route::get('/my-orders', MyOrdersPage::class);
     Route::get('/my-orders/{id}', MyOrderDetailPage::class);
@@ -69,6 +73,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/user', User::class)->name('admin.user');
         Route::get('/category', Category::class)->name('admin.category');
         Route::get('/product', Product::class)->name('admin.product');
+        Route::get('/order', Order::class)->name('admin.order');
         Route::get('/voucher', Voucher::class)->name('admin.voucher');
         Route::get('/banner', Banner::class)->name('admin.banner');
     });

@@ -27,8 +27,8 @@
                 <span class="text-sm">Sản phẩm</span>
             </a>
         </li>
-        <li class="mb-1 group {{ request()->is('admin/product')?'active':'' }}">
-            <a href="/admin/product" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+        <li class="mb-1 group {{ request()->is('admin/order')?'active':'' }}">
+            <a href="/admin/order" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                 <i class="fa-solid fa-box-open mr-3 text-lg"></i>
                 <span class="text-sm">Đơn hàng</span>
             </a>
@@ -43,6 +43,12 @@
             <a href="/admin/banner" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
                 <i class="fa-solid fa-image mr-3 text-lg"></i>
                 <span class="text-sm">Banner</span>
+            </a>
+        </li>
+        <li class="mb-1 group">
+            <a href="{{route('home')}}" class="flex items-center py-2 px-4 text-gray-300 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+                <i class="fa-solid fa-left-long mr-3 text-lg"></i>
+                <span class="text-sm">Trang chủ</span>
             </a>
         </li>
     </ul>

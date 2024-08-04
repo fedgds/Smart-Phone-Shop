@@ -18,7 +18,10 @@
           <hr class="my-5 border-slate-300">
 
           <!-- Form -->
-          <form wire:submit..prevent='save'>
+          <form wire:submit.prevent='save'>
+            
+            @csrf
+            
             <div class="grid gap-y-4">
               <!-- Form Group -->
               <label for="email" class="block text-sm mb-2 dark:text-white">Email</label>

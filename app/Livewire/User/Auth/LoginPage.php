@@ -3,6 +3,8 @@
 namespace App\Livewire\User\Auth;
 
 use App\Http\Requests\Auth\LoginRequest;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Livewire\Component;
 
@@ -15,12 +17,12 @@ class LoginPage extends Component
     public function save()
     {
         $request = new LoginRequest();
-        $validationData = $request->livewireRules();
+        $val = $request->livewireRules();
 
         $this->validate([
-            'email' => $validationData['rules']['email'],
-            'password' => $validationData['rules']['password']
-        ], $validationData['messages']);
+            'email' => $val['rules']['email'],
+            'password' => $val['rules']['password']
+        ], $val['messages']);
 
         if(!auth()->attempt(['email' => $this->email, 'password' => $this->password])) {
             $this->alert('error', 'Sai thông tin đăng nhập!', [
@@ -31,7 +33,7 @@ class LoginPage extends Component
             return;
         }
 
-        return redirect()->intended();
+        return redirect()->to('/');
     }
     public function render()
     {

@@ -123,6 +123,10 @@
 						</hr>
 					</div>
 					<input type="hidden" name="grand_total" value="{{ $grand_total }}">
+					<div class="flex flex-col-2 gap-2 mt-4">
+						<input type="text" class="w-4/5 py-2 px-3 rounded-lg text-sm text-white border border-gray-400" placeholder="Nhập code">
+						<button class="w-1/5 bg-blue-500 py-2 px-3 rounded-lg text-sm text-white hover:bg-blue-600">Áp dụng</button>
+					</div>
 					<button type="submit" name="redirect" class="bg-gray-900 mt-4 w-full p-3 rounded-lg text-lg text-white hover:bg-gray-800">
 						Đặt hàng
 					</button>
